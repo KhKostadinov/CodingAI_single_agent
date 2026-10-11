@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | SecureAuth</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-body">
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <div class="navbar-brand">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <span>SecureAuth</span>
+            </div>
+            <div class="navbar-actions">
+                <span class="navbar-user">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    {{ user.username }}
+                </span>
+                <a href="{{ url_for('logout') }}" class="btn btn-outline btn-sm">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <!-- Flash Messages -->
+        <div class="flash-messages" id="flashMessages"></div>
+
+        <!-- Welcome Card -->
+        <section class="welcome-card">
+            <div class="welcome-content">
+                <h2 class="welcome-title">Welcome, {{ user.username }}! 👋</h2>
+                <p class="welcome-text">You're successfully logged in. Here's a quick overview of your account.</p>
+            </div>
+            <div class="welcome-avatar">
+                <span class="avatar-letter">{{ user.username[0]|upper }}</span>
+            </div>
+        </section>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon stat-icon-blue">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+                <div class="stat-info">
+                    <h3 class="stat-value">{{ user.username }}</h3>
+                    <p class="stat-label">Username</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon stat-icon-green">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                </div>
+                <div class="stat-info">
+                    <h3 class="stat-value">{{ user.email }}</h3>
+                    <p class="stat-label">Email</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon stat-icon-purple">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </div>
+                <div class="stat-info">
+                    <h3 class="stat-value">{{ user.created_at.strftime('%b %d, %Y') if user.created_at else 'N/A' }}</h3>
+                    <p class="stat-label">Member Since</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon stat-icon-orange">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                </div>
+                <div class="stat-info">
+                    <h3 class="stat-value">{{ user.last_login.strftime('%b %d, %Y %H:%M') if user.last_login else 'First login' }}</h3>
+                    <p class="stat-label">Last Login</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Section -->
+        <section class="activity-section">
+            <h3 class="section-title">Recent Activity</h3>
+            <div class="activity-list">
+                <div class="activity-item">
+                    <div class="activity-dot activity-dot-green"></div>
+                    <div class="activity-content">
+                        <p class="activity-text">Account created successfully</p>
+                        <span class="activity-time">{{ user.created_at.strftime('%b %d, %Y at %H:%M') if user.created_at else '' }}</span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-dot activity-dot-blue"></div>
+                    <div class="activity-content">
+                        <p class="activity-text">Logged in to the system</p>
+                        <span class="activity-time">{{ user.last_login.strftime('%b %d, %Y at %H:%M') if user.last_login else 'Just now' }}</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+        <p>&copy; 2024 SecureAuth. All rights reserved.</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
